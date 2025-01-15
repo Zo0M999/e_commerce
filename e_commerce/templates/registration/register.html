@@ -1,0 +1,18 @@
+{% extends 'layouts/base.html' %}
+
+
+{% block content %}
+    <div class="container">
+        <br/><br/>
+        <br/><br/>
+        <div class="col-md-6 offset-md-3">
+            <form method="post" action="{% url 'registration:register' %}">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-secondary">Register</button>
+            </form>
+        </div>
+        <br/><br/>
+        <br/><br/>
+    </div>
+{% endblock %}

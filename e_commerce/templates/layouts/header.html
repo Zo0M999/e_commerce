@@ -1,0 +1,48 @@
+{% if title == 'Home' %}
+    <header class="bg-dark py-5">
+        <div class="container px-4 px-lg-5 my-5">
+            <div class="text-center text-white">
+                <h1 class="display-4 fw-bolder">E-commerce</h1>
+                <p class="lead fw-normal text-white-50 mb-0">Devices that suit your style</p>
+            </div>
+        </div>
+    </header>
+{% elif title == 'About' %}
+    <header class="bg-dark py-5">
+        <div class="container px-4 px-lg-5 my-5">
+            <div class="text-center text-white">
+                <h1 class="display-4 fw-bolder">About</h1>
+                <p class="lead fw-normal text-white-50 mb-0">Who we are...</p>
+            </div>
+        </div>
+    </header>
+{% elif title == 'Category' %}
+    <header class="bg-dark py-5">
+        <div class="container px-4 px-lg-5 my-5">
+            <div class="text-center text-white">
+                <h1 class="display-4 fw-bolder">{{ category.name }}</h1>
+                <p class="lead fw-normal text-white-50 mb-0">Let`s find something for you</p>
+            </div>
+        </div>
+    </header>
+{% elif title == 'Login' %}
+    <header class="bg-dark py-5">
+        <div class="container px-4 px-lg-5 my-5">
+            <div class="text-center text-white">
+                <h1 class="display-4 fw-bolder">Login</h1>
+                <p class="lead fw-normal text-white-50 mb-0">Log in to your account</p>
+            </div>
+        </div>
+    </header>
+{% elif title == 'Register' %}
+    <header class="bg-dark py-5">
+        <div class="container px-4 px-lg-5 my-5">
+            <div class="text-center text-white">
+                <h1 class="display-4 fw-bolder">Register</h1>
+                <p class="lead fw-normal text-white-50 mb-0">Let`s create an account for you</p>
+            </div>
+        </div>
+    </header>
+{% else %}
+    <header></header>
+{% endif %}

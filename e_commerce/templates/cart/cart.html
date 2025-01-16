@@ -1,0 +1,97 @@
+{% extends 'layouts/base.html' %}
+
+
+{% block content %}
+{% load static %}
+<div class="container">
+    <br/><br/>
+    <br/><br/>
+    {% if products %}
+        {% for product in products %}
+            <div class="card mb-3" style="max-width: 540px;">
+                <div class="row g-0">
+                    <div class="col-md-4">
+                        <img src="{{ product.image.url }}" class="img-fluid rounded-start" alt="...">
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ product.name }}</h5>
+                            {% if product.sale %}
+                                <p class="card-text"><small class="text-body-secondary">${{ product.sale_price }}</small></p>
+                            {% else %}
+                                <p class="card-text"><small class="text-body-secondary">${{ product.price }}</small></p>
+                            {% endif %}
+                            <div class="d-flex">
+                                {% for prod_id, qty in quantities.items %}
+                                    {% if prod_id == product.id|slugify %}
+                                        <input class="form-control text-center me-3" id="quantity{{ product.id }}" type="number" value="{{ qty }}" style="max-width: 5rem" min="1" max="{{ product.quantity }}"/>
+                                    {% endif %}
+                                {% endfor %}
+                                <button class="btn btn-secondary flex-shrink-0 me-3 cart-update" type="button" data-index="{{ product.id }}" id="cart_update">
+                                    Update
+                                </button>
+                                <button class="btn btn-danger flex-shrink-0 cart-remove" type="button" data-index="{{ product.id }}" id="cart_remove">
+                                    Remove
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+        <hr>
+        <h1>Total: {{ total_sum }}</h1>
+        <button class="btn btn-success btn-lg" type="submit">Checkout</button>
+    {% else %}
+        <p class="text-center">The cart is empty. Let`s find something for you.
+            <br/>
+            <br/>
+            <a href="{% url 'store:home' %}" class="btn btn-secondary">All products</a>
+        </p>
+    {% endif %}
+    <br/><br/>
+    <br/><br/>
+</div>
+<script>
+    $(document).on('click', '.cart-update', function(e){
+        e.preventDefault()
+        let prod_id = $(this).data('index')
+        $.ajax({
+            type: 'POST',
+            url: '{% url 'cart:cart_update' %}',
+            data: {
+                product_id: prod_id,
+                quantity: $('#quantity' + prod_id).val(),
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+                action: 'post',
+            },
+            success: function(json){
+                location.reload();
+            },
+            error: function(xhr, errmsg, err){
+                console.log(xhr.status + ": " + errmsg + "\n" + err)
+            },
+        })
+    })
+
+    $(document).on('click', '.cart-remove', function(e){
+        e.preventDefault()
+        let prod_id = $(this).data('index')
+        $.ajax({
+            type: 'POST',
+            url: '{% url 'cart:cart_remove' %}',
+            data:{
+                product_id: prod_id,
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+                action: 'post',
+            },
+            success: function(json){
+                location.reload()
+            },
+            error: function(xhr, errmsg, err){
+                console.log(xhr.status + ": " + errmsg + "\n" + err)
+            },
+        })
+    })
+</script>
+{% endblock %}

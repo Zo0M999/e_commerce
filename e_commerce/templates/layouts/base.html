@@ -14,6 +14,7 @@
     </head>
     <body>
         {% include 'layouts/navigation.html' %}
+
         {% if messages %}
             {% for message in messages %}
                 {% if message.tags == 'error' %}
@@ -29,6 +30,7 @@
                 {% endif %}
             {% endfor %}
         {% endif %}
+
         {% include 'layouts/header.html' %}
         {% block content %}{% endblock %}
         {% include 'layouts/footer.html' %}

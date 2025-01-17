@@ -3,9 +3,17 @@ from .models import Category, Product
 
 
 def home(request):
-    products = Product.objects.all()
+    categories = Category.objects.all()
     return render(request, 'store/home.html', context={
         'title': 'Home',
+        'categories': categories,
+    })
+
+
+def all_products(request):
+    products = Product.objects.all()
+    return render(request, 'store/all_products.html', context={
+        'title': 'All Products',
         'products': products,
     })
 
@@ -19,7 +27,7 @@ def product(request, prod_id):
 def category(request, category_id):
     category = Category.objects.get(id=category_id)
     products = Product.objects.filter(category=category)
-    return render(request, 'store/home.html', context={
+    return render(request, 'store/category.html', context={
         'title': 'Category',
         'category': category,
         'products': products,

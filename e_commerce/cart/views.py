@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse
+from django.contrib import messages
 from .cart import Cart
 from store.models import Product
 
@@ -25,7 +26,7 @@ def cart_add(request):
         product = get_object_or_404(Product, id=product_id)
 
         cart.add(product=product, quantity=quantity)
-
+        messages.success(request, 'Product added to cart!')
         return JsonResponse({
             'quantity': cart.__len__(),
         })
@@ -50,7 +51,7 @@ def cart_update(request):
         cart.update(product_id=product_id, quantity=quantity)
 
         return JsonResponse({
-            'quantity': cart.get_quantities()[product_id],
+            'update': 'succsess',
         })
 
 def cart_clear(request):

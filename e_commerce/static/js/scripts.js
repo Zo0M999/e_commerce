@@ -5,3 +5,10 @@
 */
 // This file is intentionally blank
 // Use this file to add JavaScript to your project
+
+$(document).ready(() => {
+  $(document.body).on('click', '.card[data-clickable=true]', (e) => {
+    var href = $(e.currentTarget).data('href');
+    window.location = href;
+  });
+});

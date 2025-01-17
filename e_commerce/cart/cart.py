@@ -15,13 +15,28 @@ class Cart:
     def add(self, product, quantity=1):
         product_id = product.id
         if (product_id in self.cart) and (self.cart[product_id]['quantity'] + quantity <= product.quantity):
-                self.cart[product_id]['quantity'] += quantity
+            self.cart[product_id]['quantity'] += quantity
+
         else:
             self.cart[product_id] = {
                 'name': product.name,
                 'price': float(product.sale_price) if product.sale else float(product.price),
                 'quantity': quantity,
             }
+
+        self.session.modified = True
+
+    def update(self, product_id, quantity):
+        if product_id in self.cart and quantity > 0:
+            self.cart[product_id]['quantity'] = quantity
+        else:
+            self.remove(product_id)
+
+        self.session.modified = True
+
+    def remove(self, product_id):
+        if product_id in self.cart:
+            del self.cart[product_id]
 
         self.session.modified = True
 
@@ -39,16 +54,5 @@ class Cart:
     def get_total(self):
         return round(sum(self.cart[prod_id]['price'] * self.cart[prod_id]['quantity'] for prod_id in self.cart.keys()), 2)
 
-    def update(self, product_id, quantity):
-        if product_id in self.cart and quantity > 0:
-            self.cart[product_id]['quantity'] = quantity
-
-        self.session.modified = True
-
-    def remove(self, product_id):
-        if product_id in self.cart:
-            del self.cart[product_id]
-
-        self.session.modified = True
 
 

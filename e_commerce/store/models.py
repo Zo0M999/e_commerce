@@ -4,6 +4,7 @@ from datetime import datetime
 
 class Category(models.Model):
     name = models.CharField(max_length=100)
+    category_image = models.ImageField(upload_to='category', blank=True, null=True)
 
     class Meta:
         verbose_name_plural = 'categories'

@@ -17,7 +17,7 @@
                     </ul>
                 </li>
                 {% if user.is_authenticated %}
-                    <li class="nav-item"><a class="nav-link" href="{% url 'registration:logout' %}">Logout</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'registration:profile' %}">{{ user }}</a></li>
                 {% else %}
                     <li class="nav-item"><a class="nav-link" href="{% url 'registration:login' %}">Login</a></li>
                     <li class="nav-item"><a class="nav-link" href="{% url 'registration:register' %}">Register</a></li>

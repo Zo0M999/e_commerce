@@ -52,6 +52,22 @@
             </div>
         </div>
     </header>
+{% elif title == 'Edit profile' %}
+    <header class="bg-dark py-5">
+        <div class="container px-4 px-lg-5 my-5">
+            <div class="text-center text-white">
+                <h1 class="display-4 fw-bolder">Edit {{ user }} page</h1>
+            </div>
+        </div>
+    </header>
+{% elif title == 'Update password' %}
+    <header class="bg-dark py-5">
+        <div class="container px-4 px-lg-5 my-5">
+            <div class="text-center text-white">
+                <h1 class="display-4 fw-bolder">Update password</h1>
+            </div>
+        </div>
+    </header>
 {% else %}
     <header></header>
 {% endif %}

@@ -5,5 +5,7 @@
 *.pyc
 __pycache__/
 local_settings.py
-product, category, profile
+product
+category
+profile
 .env

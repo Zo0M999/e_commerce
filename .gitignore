@@ -5,7 +5,7 @@
 *.pyc
 __pycache__/
 local_settings.py
-media/category
-media/product
-media/profile
+*.media/category
+*.media/product
+*.media/profile
 .env

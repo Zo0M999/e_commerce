@@ -1,0 +1,48 @@
+{% extends 'layouts/base.html' %}
+
+
+{% block content %}
+    <div class="container">
+        <br/><br/>
+            <div class="card text-left">
+                <div class="card-body">
+                    <form method="POST" action="{% url 'store:search' %}">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <input type="text" class="form-control" name="searched" value="{{ searched }}" placeholder="Enter product name...">
+                        </div>
+                        <a href="#" class="btn btn-secondary">Search</a>
+                        <div class="mb-3">
+                            <br/>
+                            {% if searched %}
+                                {% if result %}
+                                    <h2>Search results for "{{ searched }}"</h2>
+                                    <br/>
+                                    {% for product in result %}
+                                        <div class="card mb-3" style="max-width: 540px;" data-clickable="true" data-href="{% url 'store:product' product.id %}">
+                                            <div class="row g-0">
+                                                <div class="col-md-4">
+                                                    <img src="{{ product.image.url }}" class="img-fluid rounded-start" alt="...">
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <div class="card-body">
+                                                        <h5 class="card-title">{{ product.name }}</h5>
+                                                        <p class="card-text">{{ product.description|slice:"0:50" }}...</p>
+                                                        <a href="{% url 'store:product' product.id %}" class="btn btn-primary">View Product</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                    <br/>
+                                {% else %}
+                                    <h2>No results found for "{{ searched }}"</h2>
+                                {% endif %}
+                            {% endif %}
+                        </div>
+                    </form>
+                </div>
+            </div>
+        <br/><br/>
+    </div>
+{% endblock %}

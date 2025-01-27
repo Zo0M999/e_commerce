@@ -37,3 +37,17 @@ def about(request):
     return render(request, 'store/about.html', context={
         'title': 'About',
     })
+
+def search(request):
+    if request.method == 'POST':
+        searched = request.POST.get('searched')
+        result = Product.objects.filter(full_name__icontains=searched)
+        return render(request, 'store/search.html', context={
+            'title': 'Search',
+            'searched': searched,
+            'result': result,
+        })
+    else:
+        return render(request, 'store/search.html', context={
+            'title': 'Search',
+        })

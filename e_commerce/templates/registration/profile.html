@@ -6,8 +6,8 @@
     <div class="container mt-5">
         <div class="row">
             <div class="col-md-4">
-                {% if user.photo %}
-                    <img class="card-img-top mb-5 mb-md-0" src="..." alt="...">
+                {% if user.profile.profile_image %}
+                    <img class="card-img-top mb-5 mb-md-0" src="{{ user.profile.profile_image.url }}" alt="...">
                 {% else %}
                     <img class="card-img-top mb-5 mb-md-0" src="{% static 'assets/personal-profile.png' %}" alt="...">
                 {% endif %}
@@ -15,8 +15,7 @@
             <div class="col-md-8">
                 <h2>{{ user }}</h2>
                 <p><strong>Email: </strong>{{ user.email }}</p>
-                <p><strong>Phone: </strong>phone number</p>
-                <p><strong>Address: </strong>Address</p>
+                <p><strong>Phone: </strong>{{ user.profile.phone }}</p>
 
                 <h3>Order History</h3>
                 <table class="table table-striped">
@@ -46,12 +45,13 @@
 
                 <h3>Saved Addresses</h3>
                 <ul class="list-group">
-                    <li class="list-group-item"><strong>Home:</strong> 123 Main St, Anytown, USA</li>
-                    <li class="list-group-item"><strong>Work:</strong> 456 Business Rd, Anytown, USA</li>
+                    <li class="list-group-item"><strong>Address 1: </strong>{{ user.profile.address1 }}</li>
+                    <li class="list-group-item"><strong>Address 2: </strong>{{ user.profile.address2 }}</li>
                     </ul>
 
                 <br/>
                 <a class="btn btn-secondary" href="{% url 'registration:edit_profile' %}">Edit profile</a>
+                <a class="btn btn-primary" href="{% url 'registration:add_info' %}">Add Info</a>
                 <a class="btn btn-danger" href="{% url 'registration:logout' %}">Logout</a>
                 <br/>
                 <br/>

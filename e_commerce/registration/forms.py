@@ -2,6 +2,8 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm, SetPasswordForm
 from django import forms
 
+from .models import Profile
+
 
 class SignUpForm(UserCreationForm):
     email = forms.EmailField(label="", widget=forms.TextInput(attrs={'class':'form-control', 'placeholder':'Email Address'}))
@@ -34,7 +36,7 @@ class UpdateUserForm(UserChangeForm):
     email = forms.EmailField(label="", widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Email Address'}))
     first_name = forms.CharField(label="", max_length=100, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'First Name'}))
     last_name = forms.CharField(label="", max_length=100, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Last Name'}))
-    password = None  # no password updating for now
+    password = None
 
     class Meta:
         model = User
@@ -47,6 +49,19 @@ class UpdateUserForm(UserChangeForm):
         self.fields['username'].widget.attrs['placeholder'] = 'User Name'
         self.fields['username'].label = ''
         self.fields['username'].help_text = '<span class="form-text text-muted"><small>Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.</small></span>'
+
+class UserInfoForm(forms.ModelForm):
+    phone = forms.CharField(label="", max_length=100, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Phone number'}))
+    address1 = forms.CharField(label="", max_length=100, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'First address'}))
+    address2 = forms.CharField(label="", max_length=100, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Second address'}), required=False)
+    city = forms.CharField(label="", max_length=100, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'City'}), required=False)
+    region = forms.CharField(label="", max_length=100, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Region'}), required=False)
+    country = forms.CharField(label="", max_length=100, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Country'}), required=False)
+    profile_image = forms.ImageField(widget=forms.FileInput(attrs={'class': 'form-control-file'}), required=False)
+
+    class Meta:
+        model = Profile
+        fields = ('phone', 'address1', 'address2', 'city', 'region', 'country', 'profile_image')
 
 class CheckOldPasswordForm(forms.Form):
     old_password = forms.CharField(max_length=100)

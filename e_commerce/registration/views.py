@@ -2,8 +2,8 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib import messages
-from .forms import SignUpForm, UpdateUserForm, CheckOldPasswordForm, ChangePasswordForm
-
+from .forms import SignUpForm, UpdateUserForm, UserInfoForm, CheckOldPasswordForm, ChangePasswordForm
+from .models import Profile
 
 def login_user(request):
     if request.method == 'POST':
@@ -40,7 +40,7 @@ def register_user(request):
             user = authenticate(username=username, password=password)
             login(request, user)
             messages.success(request, f'Account created for {username}!')
-            return redirect('store:home')
+            return redirect('registration:add_info')
         else:
             for error in list(form.errors.values()):
                 messages.error(request, error)
@@ -55,7 +55,7 @@ def profile(request):
     if request.user.is_authenticated:
         user = User.objects.get(id=request.user.id)
         return render(request, 'registration/profile.html', context={
-            'user': user
+            'user': user,
         })
     else:
         return redirect('registration:login')
@@ -66,7 +66,6 @@ def edit_profile(request):
         user_form = UpdateUserForm(request.POST or None, instance=curr_user)
         if user_form.is_valid():
             user_form.save()
-
             login(request, curr_user)
             messages.success(request, 'Profile updated successfully!')
             return redirect('registration:profile')
@@ -78,6 +77,23 @@ def edit_profile(request):
     else:
         messages.error(request, 'You need to be logged in to update your profile!')
         return redirect('store:home')
+
+def add_info(request):
+    if request.user.is_authenticated:
+        curr_user = Profile.objects.get(user__id=request.user.id)
+        info_form = UserInfoForm(request.POST or None, request.FILES or None, instance=curr_user)
+        if info_form.is_valid():
+            info_form.save()
+            messages.success(request, 'Profile information updated successfully!')
+            return redirect('registration:profile')
+
+        return render(request, 'registration/add_info.html', context={
+            'title': 'Add Info',
+            'info_form': info_form,
+        })
+    else:
+        messages.error(request, 'You need to be logged in to add profile information!')
+        return redirect('registration:add_info')
 
 def check_old_password(request):
     form = CheckOldPasswordForm()

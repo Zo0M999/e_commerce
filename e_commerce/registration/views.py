@@ -4,16 +4,25 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from .forms import SignUpForm, UpdateUserForm, UserInfoForm, CheckOldPasswordForm, ChangePasswordForm
 from .models import Profile
+import json
+from cart.cart import Cart
+
 
 def login_user(request):
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
-
         user = authenticate(username=username, password=password)
-
         if user:
             login(request, user)
+
+            profile = Profile.objects.get(user__id=request.user.id)
+            data = profile.cart_data
+            if data:
+                cart_data = json.loads(data)
+                cart = Cart(request)
+                cart.add_from_db(cart_data)
+
             messages.success(request, 'You have been logged in!')
             return redirect('store:home')
         else:

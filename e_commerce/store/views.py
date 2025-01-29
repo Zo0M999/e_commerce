@@ -10,8 +10,13 @@ def home(request):
     })
 
 
-def all_products(request):
-    products = Product.objects.all()
+def all_products(request, category_id=None):
+    if category_id:
+        category = Category.objects.get(id=category_id)
+        products = Product.objects.filter(category=category)
+    else:
+        products = Product.objects.all()
+
     return render(request, 'store/all_products.html', context={
         'title': 'All Products',
         'products': products,

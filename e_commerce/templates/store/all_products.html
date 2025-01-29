@@ -4,32 +4,49 @@
 {% block content %}
 {% load static %}
     <section class="py-5">
-        <div class="container px-4 px-lg-5 mt-5">
-            <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-                {% for product in products %}
-                    <div class="col mb-5">
-                        <div class="card h-100"  data-clickable="true" data-href="{% url 'store:product' product.id %}">
-                            {% if product.sale %}
-                                <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale</div>
-                            {% endif %}
-                            <img class="card-img-top" src="{{ product.image.url }}" alt="..." />
-                            <div class="card-body p-4">
-                                <div class="text-center">
-                                    <h5 class="fw-bolder">{{ product.name }}</h5>
+        <div class="container px-4">
+            <div class="row">
+                <div class="col-md-3 col-lg-2 bg-light sidebar">
+                    <br/>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item list-group-item-action bg-light">
+                            <a class="nav-link" href="{% url 'store:all_products' %}">All</a>
+                        </li>
+                        {% for cat in categories %}
+                            <li class="list-group-item list-group-item-action bg-light">
+                                <a class="nav-link" href="{% url 'store:all_products' cat.id %}">{{ cat }}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="col-md-9 col-lg-10">
+                    <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+                        {% for product in products %}
+                            <div class="col mb-5">
+                                <div class="card h-100"  data-clickable="true" data-href="{% url 'store:product' product.id %}">
                                     {% if product.sale %}
-                                    <span class="text-muted text-decoration-line-through">${{ product.price }}</span>
-                                        ${{ product.sale_price }}
-                                    {% else %}
-                                        ${{ product.price }}
+                                        <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale</div>
                                     {% endif %}
+                                    <img class="card-img-top" src="{{ product.image.url }}" alt="..." />
+                                    <div class="card-body p-4">
+                                        <div class="text-center">
+                                            <h5 class="fw-bolder">{{ product.name }}</h5>
+                                            {% if product.sale %}
+                                            <span class="text-muted text-decoration-line-through">${{ product.price }}</span>
+                                                ${{ product.sale_price }}
+                                            {% else %}
+                                                ${{ product.price }}
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                                        <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{% url 'store:product' product.id %}">More info</a></div>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{% url 'store:product' product.id %}">More info</a></div>
-                            </div>
-                        </div>
-                    </div>
-                {% endfor %}
+                        {% endfor %}
+            </div>
+                </div>
             </div>
         </div>
     </section>
